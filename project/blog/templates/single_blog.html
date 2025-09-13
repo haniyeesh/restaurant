@@ -1,0 +1,136 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+{%load jalali%}
+<div class="bradcam_area breadcam_bg">
+    <h3>صفحه داخلی بلاگ</h3>
+</div>
+<!-- bradcam_area_end -->
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section-padding">
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-8 posts-list">
+            <div class="single-post">
+                <div class="feature-img">
+                    <img class="img-fluid" src="{{blog.image.url}}" alt="">
+                </div>
+                <div class="blog_details">
+                    <h2>{{blog.title}}
+                    </h2>
+                    <ul class="blog-info-link mt-3 mb-4">
+                    <li><a href="#"><i class="fa fa-user"></i> {{blog.author}}</a></li>
+                    <li><a href="#"><i class="fa fa-comments"></i> {{blog.comment.count}}</a></li>
+                    </ul>
+                    <p class="excert">
+                    {{blog.content}}
+                    </p>
+                    
+                    <div class="quote-wrapper">
+                    <div class="quotes">
+                        ". بهترین فست فود را در برگرمین تجربه کنید"
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation-top">
+                <div class="d-sm-flex justify-content-between text-center">
+                    <form method='POST'>
+                        {% csrf_token %}
+                        <p class="like-info"><button type = 'submit' name = 'like'>
+                            <p class="like-info">
+                                <i class="fa fa-heart"></i>{{blog.like_count}}</button>
+                            </p>
+                        </p>
+                    </form>
+                    <div class="col-sm-4 text-center my-2 my-sm-0">
+                    <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> {{blog.comment.count}}</p> 
+                    </div>
+                    <ul class="social-icons">
+                    <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                    <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                    </ul>
+                </div>
+            <div class="comments-area">
+                {% for comment in comments %}
+                    {% if comment.parent == None %}
+                    <div class="comment-list mb-4">
+                        <div class="single-comment d-flex align-items-start">
+                        
+                        <!-- آواتار کاربر -->
+                        <div class="thumb me-3">
+                            <img src="" alt="" class="rounded-circle" width="50" height="50">
+                        </div>
+                        
+                        <!-- محتوای کامنت -->
+                        <div class="desc w-100">
+                            <p>{{ comment.text }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                            <h6 class="mb-0">
+                                <a href="#">{{ comment.author }}</a>
+                            </h6>
+                            <p class="date mb-0 text-muted">{{ comment.created_at|to_jalali }}</p>
+                            </div>
+                            <div class="reply-btn mt-1">
+                            <a href="?reply={{ comment.id }}#commentForm" class="btn btn-sm btn-outline-primary">پاسخ</a>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- پاسخ‌ها -->
+                        {% for reply in comment.replies.all %}
+                        <div class="reply mt-3 ms-5 p-3 border rounded position-relative" style="background-color:#f1f3ff; border-right: 4px solid #6c63ff;">
+                            
+                            <!-- آیکون پاسخ -->
+                            <div style="position: absolute; top: 10px; right: 10px; color: #6c63ff;">
+                            <i class="fa fa-reply"></i>
+                            </div>
+
+                            <p class="mb-2">{{ reply.text }}</p>
+
+                            <div class="d-flex justify-content-between align-items-center small text-muted">
+                            <h6 class="mb-0">
+                                <a href="#" class="text-dark">{{ reply.name }}</a>
+                            </h6>
+                            <p class="mb-0">{{ reply.created_at|to_jalali }}</p>
+                            </div>
+
+                            <div class="reply-btn mt-2">
+                            <a href="?reply={{ reply.id }}#commentForm" class="btn btn-sm btn-outline-secondary">پاسخ به این نظر</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="text-muted">هنوز کامنتی ثبت نشده است.</p>
+                {% endfor %}
+                </div>
+
+                <!-- فرم ارسال نظر -->
+                <h4 class="mt-5">نظر دادن</h4>
+                <div class="form-contact comment_form" id="commentForm">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="parent" value="{{ request.GET.reply }}">
+                    <div class="form-group">
+                    <textarea class="form-control" name="text" id="comment" rows="5" placeholder="نظر خود را اینجا بنویسید"></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                    <button type="submit" name="comment_submit" class="btn btn-primary">ارسال نظر</button>
+                    </div>
+                </form>
+                </div>
+
+        <div class="col-lg-4">
+            <div class="blog_right_sidebar">
+  
+               
+        </div>
+    </div>
+</section>
+{%endblock%}

@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+<title>منوی غذا</title>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    margin: 0;
+    background:linear-gradient(to right, #ffefba, #ffffff);
+    color: #333;
+}
+
+.menu-container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 100px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.menu-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color:black;
+    animation: slideDown 1s ease-in-out;
+    }
+
+
+ .categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* دقیقاً ۴ ستون */
+  gap: 25px;
+  padding: 10px;
+  justify-items: center;}
+
+
+.category-card {
+    border-radius: 15px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    animation: scaleUp 0.6s ease forwards;
+    opacity: 0;
+    height: 180px;
+    width : 160px;
+    max-width:160px;
+    min-width : 160px;
+    margin = 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    /* گرادیان اولیه */
+    background: linear-gradient(270deg,rgb(210, 174, 117),rgb(137, 101, 101), #f9d423, #ff4e50,rgb(123, 158, 162), #514a9d,rgb(239, 159, 139),rgb(241, 161, 99));
+    background-size: 1600% 1600%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+transform: translateY(-10px) scale(1.03);
+box-shadow: 0 15px 30px rgba(119, 78, 78, 0.15);
+
+}
+
+/* متن وسط کارت */
+.category-card h2 {
+    margin: 0;
+    padding: 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background: rgba(32, 8, 8, 0.3);
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.category-card:hover h2 {
+    background: rgba(0,0,0,0.5);
+}
+
+/* انیمیشن گرادیان */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* انیمیشن‌های عمومی */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@media (max-width: 992px) {
+  .categories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .categories {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+
+<body>
+
+<div class="menu-container">
+<div class="categories">
+{% for category in category %}
+    <a href="{% url 'category1' category.id %}" class="category-card">
+    <div class="category-img" > </div>
+    <h2>{{ category.name }}</h2>
+    </a>
+{% endfor %}
+</div>
+</div>
+
+</body>
+
+
+<script>
+document.querySelectorAll('.category-card').forEach(card => {
+card.addEventListener('mousemove', e => {
+let rect = card.getBoundingClientRect();
+let x = e.clientX - rect.left;
+let y = e.clientY - rect.top;
+let centerX = rect.width / 2;
+let centerY = rect.height / 2;
+let rotateX = ((y - centerY) / centerY) * 10;
+let rotateY = ((x - centerX) / centerX) * 10;
+card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+});
+
+card.addEventListener('mouseleave', () => {
+card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+});
+});
+</script>
+{%endblock%}

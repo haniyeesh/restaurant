@@ -1,0 +1,108 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+  <title>ورود به سایت</title>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(90deg,rgb(24, 165, 170), #feb47b);
+      font-family: 'Tahoma', sans-serif;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 200px auto;
+      background: #ffffff;
+      padding: 35px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .login-container:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #4a4a4a;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.4px;
+    }
+    label {
+      font-weight: 600;
+      color: #555555;
+      margin-bottom: 6px;
+    }
+    .form-control {
+      direction: rtl;
+      border-radius: 8px;
+      border: 1.8px solid #d1d5db;
+      padding: 10px 12px;
+      font-size: 15px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+      outline: none;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 12px 0;
+      background-color: #6c63ff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #574fd6;
+    }
+    .link-text {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #7b7b7b;
+    }
+    .link-text a {
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .link-text a:hover {
+      color: #574fd6;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+  <div class="login-container">
+    <h2>ورود به سایت</h2>
+    <p>برای استفاده از خدمات سایت ما ابتدا وارد حساب کاربری شوید</p>
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="username">نام کاربری</label>
+        <input type="text" id="username" name="username" class="form-control" required autofocus />
+      </div>
+      <div class="mb-3">
+        <label for="password">کلمه عبور</label>
+        <input type="password" id="password" name="password" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-primary">ورود</button>
+       {% if error%}
+          <p style = 'color : red;'>{{error}}</p>
+      {% endif %}
+      <a class="lost_pass" href="{% url 'psw' %}">رمز عبور را فراموش کرده اید؟</a>
+    </form>
+    <p class="link-text">
+      حساب کاربری نداری؟ <a href="{% url 'signup' %}">ثبت نام کن</a>
+    </p>
+  </div>
+
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</html>
+{%endblock%}

@@ -1,0 +1,209 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+<style>
+    body {
+      margin: 0;
+      font-family: "Vazir", Tahoma, sans-serif;
+      background-color: #f3f4f6;
+      color: #333;
+      padding: 30px 20px;
+      padding-top: 140px; /* فاصله از نوبار */
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+
+    .results-container {
+      max-width: 850px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid #27ae60;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .card-price {
+      font-size: 14px;
+      color: #e74c3c;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .btn-add-cart {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-add-cart:hover {
+      background-color: #1e8449;
+    }
+
+    @media (max-width: 500px) {
+      .card img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    <style>
+  .quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 110px;
+  }
+  .qty-btn {
+    background-color:rgb(220, 188, 27);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+  }
+  .qty-btn:hover {
+    background-color:rgb(210, 123, 15);
+  }
+  .qty-input {
+    width: 50px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    outline: none;
+  }
+
+
+.btn-add-to-cart {
+    background: linear-gradient(45deg, #28a745, #218838);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(40, 167, 69, 0.4);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+.btn-add-to-cart:hover {
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    box-shadow: 0 7px 15px rgba(33, 136, 52, 0.6);
+  }
+
+.btn-add-to-cart:active {
+    background: linear-gradient(45deg, #1e7e34, #19692c);
+    box-shadow: 0 3px 7px rgba(25, 105, 44, 0.7);
+    transform: translateY(2px);
+  }
+
+
+</style>
+  </style>
+</head>
+
+<body>
+
+<h1>نتایج جست‌وجو برای "<span id="search-query">{{ query }}</span>"</h1>
+{% if result %}
+    {% for food in result %}
+        <div class="results-container">
+<!-- کارت نمونه -->
+         
+                <div class="card" >
+                    <img src="{{food.image.url}}" alt="" />
+                        <div class="card-body">
+                            <h2 class="card-title">{{food.name}}</h2>
+                            <p class="card-description">{{food.detail}}</p>
+                                <div class="card-footer">
+                                    <div class="card-price">{{food.price}}</div>
+                                   <form method="post" action="#">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="food_id" value="{{ food.id }}">                                   
+                                    <div class="quantity-selector">
+                                        <button type="button" class="qty-btn" onclick="decreaseQty(this)">-</button>
+                                        <input type="number" name="quantity" class="qty-input" value="0" min="0" max="20" />
+                                        <button type="button" class="qty-btn" onclick="increaseQty(this)">+</button>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn-add-to-cart">افزودن به سبد</button>
+                                    </form>
+                                </div>
+                        </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+    {% else %}
+        <p>هیچ غذایی پیدا نشد.</p>
+{% endif %}
+</div>    
+
+</body>
+
+<script>
+  function decreaseQty(btn) {
+    const input = btn.parentElement.querySelector('.qty-input');
+    let currentVal = parseInt(input.value);
+    if(currentVal > parseInt(input.min)) {
+      input.value = currentVal - 1;
+    }
+  }
+  function increaseQty(btn) {
+    const input = btn.parentElement.querySelector('.qty-input');
+    let currentVal = parseInt(input.value);
+    if(currentVal < parseInt(input.max)) {
+      input.value = currentVal + 1;
+    }
+  }
+</script>
+
+{%endblock%}

@@ -1,0 +1,163 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+
+ <div class="bradcam_area breadcam_bg overlay">
+        <h3>منو</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
+<!-- best_burgers_area_start  -->
+<div class="best_burgers_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section_title text-center mb-80">
+                    <span>منو برگرمین</span>
+                    <h3>Best FOOD Ever</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+           {%for burger in food %}
+                    <div class="col-xl-6 col-md-6 col-lg-6">
+                        <div class="single_delicious d-flex align-items-center">
+                            <div class="thumb">
+                                <img src="{{burger.image.url}}" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>{{burger.name}}</h3>
+                                <p>{{burger.detail}}</p>
+                                <span>{{burger.price}}t</span>
+                                <form method="post" action="#">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="food_id" value="{{ burger.id }}">
+                                    
+                                    <div class="quantity-selector">
+                                        <button type="button" class="qty-btn" onclick="decreaseQty(this)">-</button>
+                                        <input type="number" name="quantity" class="qty-input" value="0" min="0" max="20" />
+                                        <button type="button" class="qty-btn" onclick="increaseQty(this)">+</button>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn-add-to-cart">افزودن به سبد</button>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+      
+    <br>
+    <!-- features_room_startt -->
+    <div class="Burger_President_area">
+            <div class="Burger_President_here">
+                <div class="single_Burger_President">
+                    <div class="room_thumb">
+                            <img src="{%static 'img/burgers/1.png'%}" alt="">
+                        <div class="room_heading d-flex justify-content-between align-items-center">
+                            <div class="room_heading_inner">
+                                <span>300.00t</span>
+                                <h3>کمبو مخصوص</h3>
+                                <p>ترکیب برگر کلاسیک و <br> سیب زمینی</p>
+                                <a href="#" class="boxed-btn3">همین الان سفارش بده</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="single_Burger_President">
+                    <div class="room_thumb">
+                            <img src="{%static 'img/burgers/2.png'%}" alt="">
+                        <div class="room_heading d-flex justify-content-between align-items-center">
+                            <div class="room_heading_inner">
+                                <span>300.000</span>
+                                <h3>دوبل جیزبرگر</h3>
+                                <p>آفر ویژه برای امروز <br> دوبل چیزبرگر مخصوص</p>
+                                <a href="#" class="boxed-btn3">همین الان سفارش بده</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+<!-- features_room_end -->
+
+<style>
+  .quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 110px;
+  }
+  .qty-btn {
+    background-color:rgb(220, 188, 27);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+  }
+  .qty-btn:hover {
+    background-color:rgb(210, 123, 15);
+  }
+  .qty-input {
+    width: 50px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    outline: none;
+  }
+
+
+.btn-add-to-cart {
+    background: linear-gradient(45deg, #28a745, #218838);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(40, 167, 69, 0.4);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+.btn-add-to-cart:hover {
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    box-shadow: 0 7px 15px rgba(33, 136, 52, 0.6);
+  }
+
+.btn-add-to-cart:active {
+    background: linear-gradient(45deg, #1e7e34, #19692c);
+    box-shadow: 0 3px 7px rgba(25, 105, 44, 0.7);
+    transform: translateY(2px);
+  }
+
+
+</style>
+
+<script>
+  function decreaseQty(btn) {
+    const input = btn.parentElement.querySelector('.qty-input');
+    let currentVal = parseInt(input.value);
+    if(currentVal > parseInt(input.min)) {
+      input.value = currentVal - 1;
+    }
+  }
+  function increaseQty(btn) {
+    const input = btn.parentElement.querySelector('.qty-input');
+    let currentVal = parseInt(input.value);
+    if(currentVal < parseInt(input.max)) {
+      input.value = currentVal + 1;
+    }
+  }
+</script>
+
+
+{%endblock%}

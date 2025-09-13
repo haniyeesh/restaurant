@@ -1,0 +1,123 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+{% load static %}
+
+  <title>ثبت نام در سایت</title>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <style>
+    body {
+       background: linear-gradient(90deg,rgb(0, 227, 197),rgb(221, 120, 32));
+      font-family: 'Tahoma', sans-serif;
+    }
+    .register-container {
+      max-width: 400px;
+      margin: 200px auto;
+      background: #ffffff;
+      padding: 35px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .register-container:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 28px;
+      color: #3c8d2f;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.4px;
+    }
+    label {
+      font-weight: 600;
+      color: #555555;
+      margin-bottom: 6px;
+    }
+    .form-control {
+      direction: rtl;
+      border-radius: 8px;
+      border: 1.8px solid #d1d5db;
+      padding: 10px 12px;
+      font-size: 15px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #3c8d2f;
+      box-shadow: 0 0 8px rgba(60, 141, 47, 0.3);
+      outline: none;
+    }
+    .btn-success {
+      width: 100%;
+      padding: 12px 0;
+      background-color: #3c8d2f;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+      background-color: #2f6a21;
+    }
+    .link-text {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #7b7b7b;
+    }
+    .link-text a {
+      color: #3c8d2f;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .link-text a:hover {
+      color: #2f6a21;
+      text-decoration: underline;
+    }
+  </style>
+
+  <div class="register-container">
+    <h2>ثبت نام در سایت</h2>
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="username">نام کاربری</label>
+        <input type="text" id="username" name="username" class="form-control" required autofocus />
+      </div>
+
+      <div class="mb-3">
+        <label for="phone_number">شماره همراه</label>
+        <input type="phone_number" id="phone_number" name="phone_number" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="email">ایمیل</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="password1">کلمه عبور</label>
+        <input type="password" id="password1" name="password1" class="form-control" required />
+      </div>
+      
+      <div class="mb-3">
+        <label for="password2">تکرار کلمه عبور</label>
+        <input type="password" id="password2" name="password2" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-success">ثبت نام</button>
+      {% if error%}
+        <p style = 'color : red;'>{{error}}</p>
+      {% endif %}
+    </form>
+    <p class="link-text">
+      حساب داری؟ <a href="{% url 'user_login' %}">وارد شو</a>
+    </p>
+  </div>
+
+
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{%endblock%}

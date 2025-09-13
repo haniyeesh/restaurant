@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+<!-- فونت فارسی Vazir -->
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
+
+<!-- Font Awesome برای آیکون‌ها (اختیاری) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+  body {
+    font-family: 'Vazir', sans-serif;
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    margin: 50px;
+   
+    padding: 0;
+  }
+
+  .reservation-container {
+    max-width: 800px;
+    margin: 150px auto;
+    padding: 40px;
+    background: #fffdfc;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .reservation-container h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff6f00, #ffca28);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 12px 15px;
+    border: 1px solid #ffc107;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .submit-btn {
+    background: linear-gradient(to right, #ff6f00, #ffca28);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(to left, #ff6f00, #ffca28);
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 600px) {
+    .reservation-container {
+      padding: 25px 20px;
+      margin: 150px 10px;
+    }
+  }
+</style>
+
+<div class="reservation-container" dir="rtl">
+  <h2>رزرو میز</h2>
+  <form action="reserve" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="name">نام کامل</label>
+      <input type="text" id="name" name="name" placeholder="نام و نام خانوادگی" required>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">شماره تماس</label>
+      <input type="tel" id="phone" name="phone" placeholder="مثلاً 09123456789" required>
+    </div>
+
+    <div class="form-group">
+      <label for="guests">تعداد نفرات</label>
+      <input type="number" id="guests" name="guests" min="1" max="20" placeholder="مثلاً 4 نفر" required>
+    </div>
+
+    <div class="form-group">
+      <label for="date">تاریخ رزرو</label>
+      <input type="date" id="date" name="date" required>
+    </div>
+
+    <div class="form-group">
+      <label for="time">ساعت رزرو</label>
+      <input type="time" id="time" name="time" required>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">یادداشت یا درخواست خاص</label>
+      <textarea id="notes" name="notes" placeholder="مثلاً میز کنار پنجره یا تولد داریم :)"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">رزرو کن</button>
+  </form>
+</div>
+
+{%endblock%}

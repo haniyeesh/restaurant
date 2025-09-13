@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+<style>
+.contact-title {
+    font-family: 'Vazirmatn', Tahoma, sans-serif; 
+    font-weight: 700;
+    font-size: 1.1;
+    color:rgb(21, 91, 26); 
+    text-align: center;
+    margin: 20px 0 40px 0;
+    text-shadow: 1px 1px 4px rgba(108, 99, 255, 0.6);
+}
+#contact-footer {
+    background: #fff8f0;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(255, 165, 80, 0.3);
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #6b4c3b;
+}
+
+#contact-footer h4 {
+    text-align: center;
+    margin-bottom: 18px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color:rgb(6, 72, 86);
+}
+
+#contact-footer form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#contact-footer textarea {
+    resize: vertical;
+    min-height: 100px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 2px solid #f2a365;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+#contact-footer textarea::placeholder {
+    color:rgb(82, 18, 18);
+    font-style: italic;
+}
+#contact-footer textarea:focus {
+    border-color: #f4a261;
+    box-shadow: 0 0 8px #f4a261aa;
+    outline: none;
+}
+
+#contact-footer button {
+    background-color:rgb(238, 153, 78);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 0;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px #f2848266;
+}
+#contact-footer button:hover {
+    background-color:rgb(129, 111, 52);
+    box-shadow: 0 6px 12px #e76f5166;
+}
+</style>
+
+
+<section class="contact-section">
+    <div class="container">
+        <div class="d-none d-sm-block mb-5 pb-4">
+            <div id="map" style="height: 480px; position: relative; overflow: hidden;"></div>
+            <script>
+                function initMap() {
+                    var uluru = {
+                        lat: -25.363,
+                        lng: 131.044
+                    };
+                    var grayStyles = [{
+                            featureType: "all",
+                            stylers: [{
+                                    saturation: -90
+                                },
+                                {
+                                    lightness: 50
+                                }
+                            ]
+                        },
+                        {
+                            elementType: 'labels.text.fill',
+                            stylers: [{
+                                color: '#ccdee9'
+                            }]
+                        }
+                    ];
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: {
+                            lat: -31.197,
+                            lng: 150.744
+                        },
+                        zoom: 9,
+                        styles: grayStyles,
+                        scrollwheel: false
+                    });
+                }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap">
+            </script>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                
+            </div>
+            <div class="col-lg-8">
+                <section id="contact-footer">
+                    <h2 class="contact-title">  برای ما نظر بگذارید</h2>
+                    <h4>بعد از ارسال نظر در قسمت درباره ما نظر شما منتشر میشود </h4>
+                    <form method="post" action="{% url 'idea_view' %}">
+                        {% csrf_token %}
+                        <textarea name="text" placeholder="نظر خود را وارد کنید"></textarea>
+                        <button type="submit">ارسال</button>
+                    </form>
+                </section>
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-home"></i></span>
+                    <div class="media-body">
+                        <h3>تهران ، پاسداران</h3>
+                        <p>پلاک 90</p>
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-tablet"></i></span>
+                    <div class="media-body">
+                        <h3>09193104462</h3>
+                        <p>شنبه تا چهارشنبه8 صبح الی 23:30</p>
+                        <p>پنجشنبه و جمعه 10 صبح الی 23:30</p>
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-email"></i></span>
+                    <div class="media-body">
+                        <h3>haniyesheikh1382@gmail.com</h3>
+                        <p>انتقادات و پیشنهادات خود را ایمیل کنید!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

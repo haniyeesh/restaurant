@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>رزرو موفق</title>
+
+  <!-- فونت Vazir -->
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Vazir', sans-serif;
+      background-color: #fefefe;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+
+    .success-box {
+      background-color: #ffffff;
+      border: 1px solid #eeeeee;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .success-box h1 {
+      font-size: 22px;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+
+    .status-box {
+      margin-top: 20px;
+      background-color: #f1f8e9;
+      border: 1px solid #c5e1a5;
+      color: #558b2f;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #ff6f00;
+      font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: #e65100;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-box">
+    <h1>رزرو شما با موفقیت ثبت شد 🎉</h1>
+
+    <!-- نمایش وضعیت رزرو -->
+
+<p><strong>نام:</strong> {{ reservation.name }}</p>
+    <p><strong>تلفن:</strong> {{ reservation.phone }}</p>
+    <p><strong>تاریخ:</strong> {{ reservation.date }}</p>
+    <p><strong>ساعت:</strong> {{ reservation.time }}</p>
+    <p><strong>تعداد نفرات:</strong> {{ reservation.guest }}</p>
+     <p><strong> توضیحات بیشتر:</strong> {{ reservation.note }}</p>
+<p>
+    وضعیت رزرو: 
+{% if reservation.status == "pending" %}
+    <span style="color: orange;">در انتظار تأیید مدیر</span>
+{% elif reservation.status == "confirmed" %}
+    <span style="color: green;">تأیید شده ✅</span>
+{% elif reservation.status == "canceled" %}
+    <span style="color: red;">لغو شده ❌</span>
+{% endif %}
+</p>
+
+    <a class="back-link" href="/">بازگشت به صفحه اصلی</a>
+  </div>
+</body>
+</html>

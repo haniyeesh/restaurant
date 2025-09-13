@@ -1,0 +1,241 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+{%load jalali%}
+<style>
+  .blog_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+
+  .blog_item {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .blog_item_img {
+  position: relative;
+}
+
+.blog_item_date {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #ff6f00;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  line-height: 1.2;
+}
+
+  .blog_details {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .blog_details h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .blog_details p {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .blog-info-link {
+    margin-top: 15px;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #999;
+  }
+
+  /* ریسپانسیو */
+  @media (max-width: 1024px) {
+    .blog_grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .blog_grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .blog_grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .search-box {
+  display: flex;
+  align-items: center;
+  max-width: 280px;
+  margin: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.search-box input.form-control {
+  border: none;
+  padding: 10px;
+  flex-grow: 1;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-box button.btn {
+  background-color: transparent;
+  border: none;
+  padding: 10px 12px;
+  color: #ff6f00;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-box button.btn:hover {
+  color: #e65100;
+}
+
+</style>
+
+<div class="bradcam_area breadcam_bg">
+    <h3>وبلاگ</h3>
+</div>
+<div class="blog_left_sidebar blog_grid">
+  {% for blog in page_obj %}
+    <article class="blog_item">
+      <div class="blog_item_img">
+        <img class="card-img rounded-0" src="{{ blog.image.url }}" alt="{{ blog.title }}">
+        <a href="#" class="blog_item_date">
+          {{ blog.created_at|to_jalali }}
+        </a>
+      </div>
+
+      <div class="blog_details">
+        <a class="d-inline-block" href="{% url 'single_blog' blog.id %}">
+          <h2>{{ blog.title }}</h2>
+        </a>
+        <p>{{ blog.content|truncatewords:20 }}</p>
+        <ul class="blog-info-link">
+          <li><i class="fa fa-user"></i> {{ blog.author.username }}</li>
+          <li><i class="fa fa-comments"></i> {{ blog.comment.count }}</li>
+        </ul>
+      </div>
+    </article>
+  {% endfor %}
+</div>
+<nav class="blog-pagination justify-content-center d-flex">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <i class="ti-angle-left"></i>
+        </a>
+      </li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <li class="page-item active">
+          <span class="page-link">{{ num }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <i class="ti-angle-right"></i>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+   <div class="blog_right_sidebar">
+
+  <!-- 🔍 جستجو -->
+<aside class="single_sidebar_widget search_widget">
+  <form action="{% url 'search_blog' %}">
+    <div class="form-group">
+      <div class="search-box">
+        <input type="text" name="b" class="form-control" placeholder="جست‌وجو"
+               onfocus="this.placeholder=''" onblur="this.placeholder='جست‌وجو'">
+        <button class="btn" type="submit"><i class="ti-search"></i></button>
+      </div>
+    </div>
+  </form>
+</aside>
+
+  <!-- 📝 عنوان‌ مقالات -->
+  <aside class="single_sidebar_widget post_category_widget">
+    <h4 class="widget_title">مقالات اخیر</h4>
+    <ul class="list cat-list">
+      {% for blog in blog %}
+        <li>
+          <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <!-- 🏷 دسته‌بندی‌ها -->
+  <aside class="single_sidebar_widget tag_cloud_widget">
+    <h4 class="widget_title">دسته‌بندی‌ها</h4>
+    <ul class="list">
+      {% for category in blog%}
+        <li><a href="#">{{ category.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <!-- 📸 اینستاگرام -->
+  <aside class="single_sidebar_widget instagram_feeds">
+    <h4 class="widget_title">Instagram Feeds</h4>
+    <ul class="instagram_row flex-wrap">
+      {% for i in '123456' %}
+        <li>
+          <a href="#">
+            <img class="img-fluid" src="{% static 'img/post/post_'|add:i|stringformat:"s"|add:'.png' %}" alt="">
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <!-- 📧 ارسال مقاله -->
+  <aside class="single_sidebar_widget newsletter_widget">
+    <h4>اگر می‌خواهید مقاله خود را به اشتراک بگذارید، آن را برای ما ایمیل کنید:</h4>
+    <hr>
+    <div class="form-group">
+      <p><a href="mailto:haniyesheikh1382@gmail.com">haniyesheikh1382@gmail.com</a></p>
+    </div>
+  </aside>
+</div>
+
+{% endblock %}

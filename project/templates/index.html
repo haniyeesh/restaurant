@@ -1,0 +1,349 @@
+{%load static%}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+
+     {%include "include/header.html"%}
+<style>
+  .main-header-area {
+    background-color: black !important;}
+    {%block extra_css%} {%endblock%}
+</style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid p-0">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul  id="navigation">
+                                        <li><a class="active" href=" /">صفحه اصلی</a></li>
+                                        <li><a href="{%url 'menu'%}">منو </a>
+                                        </li>
+                                        <li><a href="#">بلاگ <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="{%url "blog"%}">بلاگ</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">صفحات <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                {%if request.user.role != "manager"%}
+                                                    <li><a href="{%url "reserve"%}">رزرو</a></li>
+                                                {%endif%}
+                                                <li><a href="{%url "about"%}">درباره ما</a></li>
+                                                <li><a href="{%url "contact"%}">تماس با ما</a></li>
+                                            </ul>
+                                        </li>
+                                        {%if user.is_authenticated %}
+                                            {%if request.user.role == "manager"%}
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{%url "manager"%}"> 
+                                                    پروفایل مدیریت
+                                                    </a>
+                                                </li>
+                                            {%else%}
+                                                <li class="nav-item">
+                                                <a class="nav-link" href="{%url "profile"%}"> <i class="fa-solid fa-user" style="font-size:16px;"></i>
+                                                پروفایل
+                                                </a>
+                                                </li>
+                                            {%endif%}
+                                        {% else %}
+                                            <li> <a href="{%url "user_login"%}">ورود</a></li>
+                                        {%endif%}
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo-img">
+                                <a href="{%url 'home'%}">
+                                    <img src="{%static 'img/logo.png'%}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                       <div class="header-icons" style="position: relative;">
+                            <a id="search-toggle" href="javascript:void(0)" class="icon-btn">
+                                <i class="bi bi-search"></i>
+                            </a>
+                            <a href="{%url 'cart:cart'%}" class="icon-btn">
+                                <i class="bi bi-cart"></i>
+                            </a>
+
+                            <div class="search-input" id="search-input-box">
+                                <form class="d-flex justify-content-between search-inner" method="get" action="{% url 'search' %}">
+                                    <input type="text" class="form-control" id="search-input" name="q" placeholder="جست و جو">
+                                    <button type="submit" class="btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                    <span class="bi bi-x-lg" id="close-search" title="بستن جستجو"></span>
+                                </form>
+                            </div>
+                            </div>
+                        <!-- این بخش مخصوص موبایل -->
+                       
+
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-end -->
+{%block content%}
+    <!-- slider_area_start -->
+    <div class="slider_area">
+        <div class="slider_active owl-carousel">
+            <div class="single_slider  d-flex align-items-center slider_bg_1 overlay">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-xl-9 col-md-9 col-md-12">
+                            <div class="slider_text text-center">
+                                <div class="deal_text">
+                                    <span>برگرمین </span>
+                                </div>
+                                <h3>برگر <br>
+                                    مخصوص</h3>
+                                <h4>ایران</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="single_slider  d-flex align-items-center slider_bg_2 overlay">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-xl-9 col-md-9 col-md-12">
+                            <div class="slider_text text-center">
+                                <div class="deal_text">
+                                    <span>BURGERMIN</span>
+                                </div>
+                                <h3>SPECIAL <br>
+                                    BURGER</h3>
+                                <h4>OF IRAN </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider_area_end -->
+
+    <div class="best_burgers_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section_title text-center mb-80">
+                       
+                        <h3>آفرها و تخفیفات ویژه ما</h3>
+           
+                    </div>
+                </div>
+            </div>
+    <br>
+    <!-- features_room_startt -->
+    <div class="Burger_President_area">
+            <div class="Burger_President_here">
+                <div class="single_Burger_President">
+                    <div class="room_thumb">
+                            <img src="{%static 'img/burgers/1.png'%}" alt="">
+                        <div class="room_heading d-flex justify-content-between align-items-center">
+                            <div class="room_heading_inner">
+                                <span>300.00t</span>
+                                <h3>کمبو مخصوص</h3>
+                                <p>ترکیب برگر کلاسیک و <br> سیب زمینی</p>
+                                <a href="#" class="boxed-btn3">همین الان سفارش بده</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="single_Burger_President">
+                    <div class="room_thumb">
+                            <img src="{%static 'img/burgers/2.png'%}" alt="">
+                        <div class="room_heading d-flex justify-content-between align-items-center">
+                            <div class="room_heading_inner">
+                                <span>300.000</span>
+                                <h3>دوبل جیزبرگر</h3>
+                                <p>آفر ویژه برای امروز <br> دوبل چیزبرگر مخصوص</p>
+                                <a href="#" class="boxed-btn3">همین الان سفارش بده</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- features_room_end -->
+
+    <!-- about_area_start -->
+    <div class="video_area video_bg overlay">
+        <div class="video_area_inner text-center">
+            <h3>رستوران <br>
+                برگرمین</h3>
+            <span>امکانات رستوران ما</span>
+            <div class="video_payer">
+                <a href="https://www.youtube.com/watch?v=vLnPwxZdW4Y" class="video_btn popup-video">
+                    <i class="fa fa-play"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <!-- video_area_end -->
+
+
+    <!-- instragram_area_start -->
+    <div class="instragram_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="single_instagram">
+                    <img src="{%static 'img/instragram/1.png'%}" alt="">
+                    <div class="ovrelay">
+                        <a href="#">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single_instagram">
+                    <img src="{%static 'img/instragram/2.png'%}" alt="">
+                    <div class="ovrelay">
+                        <a href="#">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single_instagram">
+                    <img src="{%static 'img/instragram/3.png'%}" alt="">
+                    <div class="ovrelay">
+                        <a href="#">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single_instagram">
+                    <img src="{%static 'img/instragram/4.png'%}" alt="">
+                    <div class="ovrelay">
+                        <a href="#">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+            <div class="section_title text-center mb-80">
+                       
+                        <h4>برای دیدن نظرات به بخش درباره ما بروید</h4>
+                        <h4>برای  درمیان گذاشتن نظرات خود با ما به بخش تماس با ما بروید</h4>
+           
+                    </div>
+    </div>
+        </div>
+    </div>
+{%endblock%}
+    <footer class="footer">
+            <div class="footer_top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget text-center ">
+                                <h3 class="footer_title pos_margin">
+                                        پاسداران
+                                </h3>
+                                <p>خیابان پایدار فرد پلاک 6<br> 
+                                        برگرمین <br>
+                                        <a href="#">haniyesheikh1382@gamil.com</a></p>
+                                <a class="number" href="#">09193104462</a>
+    
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget text-center ">
+                                <h3 class="footer_title pos_margin">
+                                    ولیعصر
+                                </h3>
+                                <p>میدان ولیعصر ضلع غربی <br> 
+                                        برگرمین ولیعصر <br>
+                                        <a href="#">burgermin.com</a></p>
+                                <a class="number" href="#">09224121193</a>
+    
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-12 col-lg-4">
+                                <div class="footer_widget">
+                                        <h3 class="footer_title">
+                                                ارتباط با ما
+                                        </h3>
+                                        <form action="{%url 'custumer_email'%}" method = 'post' class="newsletter_form">
+                                            {% csrf_token %}
+                                                <input type="text" name ='custumar_email' placeholder="ایمیل خود را وارد کنید">
+                                                <button type="submit">ثبت نام</button>
+                                        </form>
+                                        <p class="newsletter_text">با ما در ارتباط باشید تا آفرهای ما را دریافت کنید!</p>
+                                    </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4">
+                            <div class="socail_links text-center">
+                                    <ul>
+                                        <li>
+                                            <a href="https://instagram.com/haniyee__sh">
+                                                <i class="ti-instagram"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://wa.me/09193104462">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://t.me/09193104462">
+                                                <i class="fab fa-telegram"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="mailto:your.haniyesheikh1382@example.com">
+                                                <i class="fas fa-envelope"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copy-right_text">
+                <div class="container">
+                    <div class="footer_border"></div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <p class="copy_right text-center">
+<i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="/" target="_blank">haniye</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+</body>
+{%include "include/footer.html" %}
+
+</html>

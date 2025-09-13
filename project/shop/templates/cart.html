@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+{%load static%}
+{%block content%}
+<div class="cart-container">
+    <h1>🛒 سبد خرید شما</h1>
+
+    {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                    <div class="item-details">
+                        <h2>{{ item.name }}</h2>
+                        <p>قیمت: {{ item.price }} تومان</p>
+                        <p>تعداد: {{ item.quantity }}</p>
+                        <button class="remove-btn">
+                            <i class="fas fa-trash-alt"></i> حذف
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <p>مجموع کل: <strong>{{ total_price }} تومان</strong></p>
+            <button class="checkout-btn">ادامه فرایند خرید</button>
+        </div>
+    {% else %}
+        <p class="empty-message">سبد خرید شما خالی است.</p>
+    {% endif %}
+</div>
+
+<style>
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+.cart-container {
+    direction: rtl;
+    max-width: 900px;
+    margin: 190px auto;
+    padding: 80px 20px 40px 20px; 
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.cart-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-item {
+    display: flex;
+    gap: 20px;
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 10px;
+    align-items: center;
+    animation: slideIn 0.5s ease forwards;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-details h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #222;
+}
+
+.item-details p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.remove-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+.cart-summary {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.cart-summary p {
+    font-size: 20px;
+    color: #444;
+}
+
+.checkout-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.checkout-btn:hover {
+    background: #219150;
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    font-size: 18px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-item img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+</style>
+{%endblock%}
