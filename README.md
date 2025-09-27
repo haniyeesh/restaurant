@@ -1,4 +1,4 @@
-<h1>🍽️ Our Restaurant Project & Features</h1>
+<h1>🍽️my Restaurant Project </h1>
 <table>
   <thead>
     <tr>
