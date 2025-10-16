@@ -1,7 +1,9 @@
-
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Article,Comment,Article_category
 from django.core.paginator import Paginator
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
  
  
 def blog(request):
@@ -74,4 +76,5 @@ def search_blog(request):
     else:
         result = Article.objects.filter(title__icontains = query)
     return render(request, 'search_blog.html' , {'result' : result , 'query' : query})
+
 

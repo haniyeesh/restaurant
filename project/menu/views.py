@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Food,Category
 from django.shortcuts import render,get_object_or_404
 from django.core.paginator import Paginator
+from shopcart.views import add_to_cart
 
 def category1(request, category_id): 
     category = get_object_or_404(Category, id = category_id)

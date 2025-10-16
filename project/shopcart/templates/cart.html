@@ -1,0 +1,325 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block title %}سبد خرید{% endblock %}
+
+{% block content %}
+<div class="cart-wrapper">
+    <div class="cart-table-container">
+        <h2 class="cart-title">سبد خرید</h2>
+        {% if items %}
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>تصویر</th>
+                        <th>نام محصول</th>
+                        <th>قیمت</th>
+                        <th>تعداد</th>
+                        <th>قیمت مجموع</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        </td>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price }} تومان</td>
+                        <td>
+                     <form class="quantity-form auto-update-form">
+                        {% csrf_token %}
+                        <button type="button" class="qty-btn" onclick="changeQuantity(this, -1)">−</button>
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                            class="qty-input" data-item-id="{{ item.product.id }}" />
+                        <button type="button" class="qty-btn" onclick="changeQuantity(this, 1)">+</button>
+                    </form>
+                </td>
+                <td>{{ item.price_at_added }}</td>
+                <td class="item-total">{{ item.get_total_price }}</td>
+                <td>
+    <!-- فرم حذف -->
+                <td>
+                    <a href="{% url 'shopcart:remove_cart_item' item.product.id %}" 
+                    style="
+                        background-color: red; 
+                        color: white; 
+                        padding: 5px 10px; 
+                        text-decoration: none; 
+                        font-size: 18px; 
+                        border-radius: 4px;
+                    ">
+                    ×
+                    </a>
+                </td>
+            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="cart-total">
+                <span>مبلغ نهایی:</span>
+                <strong>{{ total_price}} تومان</strong>
+            </div>
+
+            <div class="cart-actions">
+                <a href="#" class="checkout-button">تسویه حساب</a>
+            </div>
+        {% else %}
+            <p class="empty-cart">سبد خرید شما خالی است.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cart-wrapper {
+    display: flex;
+    justify-content: center;       /* وسط‌چینی افقی */
+    padding: 60px 20px;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+    box-sizing: border-box;
+}
+
+.cart-table-container {
+    width: 100%;
+    margin-top :100px;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+
+    margin-left: auto;      /* ✅ این دوتا خط مهم */
+    margin-right: auto;     /* ✅ جدول رو در RTL وسط میکنه */
+
+    direction: rtl;
+    text-align: center;
+}
+
+
+/* عنوان */
+.cart-title {
+    font-size: 1.6rem;
+    color:rgb(4, 5, 5);
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* جدول */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.cart-table th, .cart-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.cart-table th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.cart-table td img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* مجموع قیمت */
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #444;
+}
+
+/* دکمه تسویه */
+.cart-actions {
+    text-align: center;
+}
+
+.checkout-button {
+    padding: 10px 25px;
+    background-color:rgb(86, 200, 71);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #ffb300;
+}
+
+/* پیغام خالی بودن سبد */
+.empty-cart {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    padding: 40px 0;
+    font-weight: 500;
+}
+.quantity-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.qty-input {
+    width: 50px;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.qty-btn {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    line-height: 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.qty-btn:hover {
+    background-color: #d3d3d3;
+}
+
+.update-btn {
+    background-color: #56c847;  /* رنگ سبز خودت */
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 2px 8px;
+    transition: background-color 0.3s ease;
+}
+
+.update-btn:hover {
+    background-color: #4ba93e;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+    vertical-align: middle;
+    transition: color 0.3s ease;
+}
+
+.remove-btn:hover {
+    color: #c0392b;
+}
+
+/* ریسپانسیو */
+@media (max-width: 600px) {
+    .cart-wrapper {
+        padding: 40px 10px;
+    }
+
+    .cart-table-container {
+        padding: 20px 15px;
+    }
+
+    .cart-table th, .cart-table td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .cart-table td img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .cart-total {
+        flex-direction: column;
+        gap: 6px;
+        font-size: 14px;
+    }
+
+    .checkout-button {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 14px;
+    }
+}
+</style>
+
+
+
+
+<script>
+function changeQuantity(button, change) {
+    const form = button.closest('.auto-update-form');
+    const input = form.querySelector('.qty-input');
+
+    // محاسبه مقدار جدید
+    let quantity = parseInt(input.value) + change;
+    if (quantity < 1) quantity = 1;
+    input.value = quantity;
+
+    const foodId = input.dataset.itemId;
+
+    // ارسال درخواست AJAX به view آپدیت
+    fetch("{% url 'shopcart:update_cart' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ product_id: foodId, quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            // بعد از موفقیت، کل صفحه خودکار رفرش شود
+            location.reload();
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+// بروزرسانی مستقیم input
+document.querySelectorAll('.qty-input').forEach(input => {
+    input.addEventListener('change', () => {
+        let value = parseInt(input.value);
+        if (isNaN(value) || value < 1) value = 1;
+        input.value = value;
+        changeQuantity(input, 0);
+    });
+});
+</script>
+
+
+
+
+{% endblock %}

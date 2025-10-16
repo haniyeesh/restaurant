@@ -1,7 +1,13 @@
 {% extends 'index.html' %}
 {%load static%}
 {%block content%}
-
+{%if messages%}
+  <div class="messages">
+    {%for message in messages%}
+    <div class"message {{message.tags}}">{{message}}</div>
+    {%endfor%}
+  </div>
+  {%endif%}
  <div class="bradcam_area breadcam_bg overlay">
         <h3>منو</h3>
     </div>
@@ -29,7 +35,7 @@
                                 <h3>{{burger.name}}</h3>
                                 <p>{{burger.detail}}</p>
                                 <span>{{burger.price}}t</span>
-                                <form method="post" action="#">
+                                <form method="post" action="{%url 'shopcart:add_to_cart' burger.id %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="food_id" value="{{ burger.id }}">
                                     
